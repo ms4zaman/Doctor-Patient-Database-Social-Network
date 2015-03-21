@@ -37,8 +37,7 @@ public class AddReviewServlet extends HttpServlet {
         String doctorAlias = request.getParameter("d_alias");
         String rating = request.getParameter("rating");
         String comment = request.getParameter("comment");
-
-        // Determine the date
+        long currentTimeMsSinceEpoch = System.currentTimeMillis();
 
         try {
             Connection connection = ConnectionHub.getConnection();

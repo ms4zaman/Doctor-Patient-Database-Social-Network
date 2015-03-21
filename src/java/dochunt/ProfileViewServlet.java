@@ -32,6 +32,7 @@ public class ProfileViewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String alias = request.getParameter("alias");
+        request.setAttribute("newalias", "Got: " + alias);
         try {
             Connection connection = ConnectionHub.getConnection();
             // Determine the type of profile we're grabbing
@@ -39,6 +40,7 @@ public class ProfileViewServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        getServletContext().getRequestDispatcher("/ProfileView.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

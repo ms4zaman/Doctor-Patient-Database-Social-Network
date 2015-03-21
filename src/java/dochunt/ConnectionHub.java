@@ -14,9 +14,9 @@ import java.sql.*;
 public class ConnectionHub {
     public static final String host = "eceweb";
     public static final String url = "jdbc:mysql://" + host + ":3306/";
-    public static final String nid = "ms4zaman";
+    public static final String nid = "dctittel";
     public static final String user = "user_" + nid;
-    public static final String pwd = "password";
+    public static final String pwd = user;
 
     public static void testConnection()
             throws ClassNotFoundException, SQLException {
