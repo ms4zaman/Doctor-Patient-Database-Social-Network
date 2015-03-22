@@ -6,4 +6,5 @@ Finished Back-end Pages:
   - PatientSearchResults.jsp
   - SeeFriendship.jsp
   - SeeFriendRequests.jsp
+  - UserLogin.jsp
   - Append to list each time one is done

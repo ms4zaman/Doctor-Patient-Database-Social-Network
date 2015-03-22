@@ -28,6 +28,14 @@
         <servlet-name>SeeFriendRequestsServlet</servlet-name>
         <servlet-class>dochunt.friendship.SeeFriendRequestsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>dochunt.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserLogoutServlet</servlet-name>
+        <servlet-class>dochunt.UserLogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PatientSearchResultsServlet</servlet-name>
         <url-pattern>/PatientSearchResultsServlet</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>SeeFriendRequestsServlet</servlet-name>
         <url-pattern>/SeeFriendRequestsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/UserLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserLogoutServlet</servlet-name>
+        <url-pattern>/UserLogoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
