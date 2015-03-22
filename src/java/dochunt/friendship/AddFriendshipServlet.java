@@ -6,7 +6,7 @@
 package dochunt.friendship;
 
 import dochunt.ConnectionHub;
-import dochunt.profile.ProfileViewServlet;
+import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.logging.Level;
@@ -40,7 +40,7 @@ public class AddFriendshipServlet extends HttpServlet {
             // See if requester/requestee exist
             // If not, add
         } catch (Exception ex) {
-            Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

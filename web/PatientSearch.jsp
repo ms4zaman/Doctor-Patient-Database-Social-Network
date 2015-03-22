@@ -16,11 +16,11 @@
     </head>
     <body>
         <h1>Search</h1>
-        <form method="post" action="ProfileViewServlet">
+        <form method="post" action="PatientSearchResultsServlet">
             Alias: <input type="text" name="alias"><br/>
             Province:
             <select name="provId">
-                <!-- <option value="">(unspecified)</option> -->
+                <option value="">(unspecified)</option>
                 <%! ArrayList<Province> provinces;%>
                 <%
                     provinces = (ArrayList<Province>)request.getAttribute("provinces");

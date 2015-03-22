@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrychung
  */
-public class ProfileSearchServlet extends HttpServlet {
+public class PatientSearchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,9 +51,9 @@ public class ProfileSearchServlet extends HttpServlet {
             }
             request.setAttribute("provinces", provinces);
         } catch (Exception ex) {
-            Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        getServletContext().getRequestDispatcher("/ProfileSearch.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/PatientSearch.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

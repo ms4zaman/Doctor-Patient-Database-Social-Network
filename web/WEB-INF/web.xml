@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>ProfileViewServlet</servlet-name>
-        <servlet-class>dochunt.profile.ProfileViewServlet</servlet-class>
+        <servlet-name>PatientSearchResultsServlet</servlet-name>
+        <servlet-class>dochunt.profile.PatientSearchResultsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddFriendshipServlet</servlet-name>
@@ -21,12 +21,12 @@
         <servlet-class>dochunt.review.AddReviewServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProfileSearchServlet</servlet-name>
-        <servlet-class>dochunt.profile.ProfileSearchServlet</servlet-class>
+        <servlet-name>PatientSearchServlet</servlet-name>
+        <servlet-class>dochunt.profile.PatientSearchServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ProfileViewServlet</servlet-name>
-        <url-pattern>/ProfileViewServlet</url-pattern>
+        <servlet-name>PatientSearchResultsServlet</servlet-name>
+        <url-pattern>/PatientSearchResultsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddFriendshipServlet</servlet-name>
@@ -45,8 +45,8 @@
         <url-pattern>/AddReviewServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProfileSearchServlet</servlet-name>
-        <url-pattern>/ProfileSearchServlet</url-pattern>
+        <servlet-name>PatientSearchServlet</servlet-name>
+        <url-pattern>/PatientSearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

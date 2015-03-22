@@ -15,7 +15,7 @@
         <h1>DocHunt!</h1>
         Please select one of the following:
         <ul>
-            <li><a href="ProfileSearchServlet">Profile View</a></li>
+            <li><a href="PatientSearchServlet">Profile View</a></li>
         </ul>
     </body>
 </html>

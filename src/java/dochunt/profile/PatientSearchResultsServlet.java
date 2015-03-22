@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrychung
  */
-public class ProfileViewServlet extends HttpServlet {
+public class PatientSearchResultsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,9 +48,11 @@ public class ProfileViewServlet extends HttpServlet {
             ArrayList<Patient> patients = searchPatients(alias, provId, city);
             request.setAttribute("patients", patients);
         } catch (Exception ex) {
-            Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        getServletContext().getRequestDispatcher("/ProfileView.jsp").forward(request, response);
+        getServletContext()
+                .getRequestDispatcher("/PatientSearchResults.jsp")
+                .forward(request, response);
     }
 
     private ArrayList<Patient> searchPatients(

@@ -6,7 +6,7 @@
 package dochunt.review;
 
 import dochunt.ConnectionHub;
-import dochunt.profile.ProfileViewServlet;
+import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.logging.Level;
@@ -43,7 +43,7 @@ public class AddReviewServlet extends HttpServlet {
             Connection connection = ConnectionHub.getConnection();
             // Insert asdfa
         } catch (Exception ex) {
-            Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
