@@ -4,6 +4,9 @@
     Author     : henrychung
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="dochunt.models.Province"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +17,21 @@
     <body>
         <h1>Search</h1>
         <form method="post" action="ProfileViewServlet">
-            <input type="text" name="alias">
+            Alias: <input type="text" name="alias"><br/>
+            Province:
+            <select name="deptID">
+                <%! ArrayList<Province> provinces;%>
+                <%
+                    provinces = (ArrayList<Province>)request.getAttribute("provinces");
+                    for (Province province : provinces) {
+                %>
+                <option value="<%= province.provId %>"><%= province.provName %></option>
+                <%
+                    }
+                %>
+            </select><br/>
+            City: <input type="text" name="city"><br/>
+
             <input type="submit" value="View Profile">
         </form>
     </body>

@@ -2,7 +2,7 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>ProfileViewServlet</servlet-name>
-        <servlet-class>dochunt.ProfileViewServlet</servlet-class>
+        <servlet-class>dochunt.profile.ProfileViewServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddFriendshipServlet</servlet-name>
@@ -19,6 +19,10 @@
     <servlet>
         <servlet-name>AddReviewServlet</servlet-name>
         <servlet-class>dochunt.review.AddReviewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileSearchServlet</servlet-name>
+        <servlet-class>dochunt.profile.ProfileSearchServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProfileViewServlet</servlet-name>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>AddReviewServlet</servlet-name>
         <url-pattern>/AddReviewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileSearchServlet</servlet-name>
+        <url-pattern>/ProfileSearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -16,7 +16,7 @@ public class ConnectionHub {
     public static final String url = "jdbc:mysql://" + host + ":3306/";
     public static final String nid = "dctittel";
     public static final String user = "user_" + nid;
-    public static final String pwd = user;
+    public static final String pwd = "user_" + nid;
 
     public static void testConnection()
             throws ClassNotFoundException, SQLException {

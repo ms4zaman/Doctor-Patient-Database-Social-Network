@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dochunt;
+package dochunt.profile;
 
+import dochunt.ConnectionHub;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.logging.Level;

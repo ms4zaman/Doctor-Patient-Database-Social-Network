@@ -6,7 +6,7 @@
 package dochunt.review;
 
 import dochunt.ConnectionHub;
-import dochunt.ProfileViewServlet;
+import dochunt.profile.ProfileViewServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.logging.Level;
