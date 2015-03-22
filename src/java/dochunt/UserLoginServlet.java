@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -69,38 +70,63 @@ public class UserLoginServlet extends HttpServlet {
     }
 
     private String saltPassword(String password)
-            throws ClassNotFoundException, SQLException {
-        Connection connection = ConnectionHub.getConnection();
+            throws ClassNotFoundException, SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        String sql = "SELECT PASSWORD(?) as salted_password";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, password);
+        String saltedPassword = null;
+        try {
+            connection = ConnectionHub.getConnection();
 
-        ResultSet results = statement.executeQuery();
-        results.next();
+            String sql = "SELECT PASSWORD(?) as salted_password";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, password);
 
-        return results.getString("salted_password");
+            ResultSet results = statement.executeQuery();
+            results.next();
+
+            saltedPassword = results.getString("salted_password");
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return saltedPassword;
     }
 
     // -1 means user failed to authenticate
     private int getUserLevel(String alias, String saltedPassword)
-            throws ClassNotFoundException, SQLException {
-        Connection connection = ConnectionHub.getConnection();
-        String sql =
-                "SELECT level " +
-                "FROM Users " +
-                "WHERE alias = ? " +
-                "  AND password = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, alias);
-        statement.setString(2, saltedPassword);
+            throws ClassNotFoundException, SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
         int userLevel = -1;
-        ResultSet results = statement.executeQuery();
-        if (results.next()) { // There should only be 1 result
-            userLevel = results.getInt("level");
-        }
+        try {
+            connection = ConnectionHub.getConnection();
+            String sql =
+                    "SELECT level " +
+                    "FROM Users " +
+                    "WHERE alias = ? " +
+                    "  AND password = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, alias);
+            statement.setString(2, saltedPassword);
 
+            ResultSet results = statement.executeQuery();
+            if (results.next()) { // There should only be 1 result
+                userLevel = results.getInt("level");
+            }
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
         return userLevel;
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -62,34 +63,59 @@ public class AddFriendshipServlet extends HttpServlet {
     }
 
     private boolean isAlreadyFriends(String requester, String requestee)
-            throws ClassNotFoundException, SQLException {
-        Connection connection = ConnectionHub.getConnection();
-        String sql =
-                "SELECT 1 " +
-                "FROM Friend " +
-                "WHERE requester = ? " +
-                "  AND requestee = ? ";
-        PreparedStatement statement = connection.prepareStatement(sql);
+            throws ClassNotFoundException, SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        statement.setString(1, requester);
-        statement.setString(2, requestee);
+        boolean isAlreadyFriends = true;
+        try {
+            connection = ConnectionHub.getConnection();
+            String sql =
+                    "SELECT 1 " +
+                    "FROM Friend " +
+                    "WHERE requester = ? " +
+                    "  AND requestee = ? ";
+            statement = connection.prepareStatement(sql);
 
-        ResultSet results = statement.executeQuery();
+            statement.setString(1, requester);
+            statement.setString(2, requestee);
 
-        return results.next();
+            ResultSet results = statement.executeQuery();
+            isAlreadyFriends = results.next();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return isAlreadyFriends;
     }
 
     private void addFriendship(String requester, String requestee)
-            throws ClassNotFoundException, SQLException {
-        Connection connection = ConnectionHub.getConnection();
+            throws ClassNotFoundException, SQLException, NamingException {
+        Connection connection = null;
+        CallableStatement statement = null;
 
-        String sql = "{CALL AddFriendship(?, ?)}";
-        CallableStatement statement = connection.prepareCall(sql);
+        try {
+            connection = ConnectionHub.getConnection();
 
-        statement.setString(1, requester);
-        statement.setString(2, requestee);
+            String sql = "{CALL AddFriendship(?, ?)}";
+            statement = connection.prepareCall(sql);
 
-        statement.execute();
+            statement.setString(1, requester);
+            statement.setString(2, requestee);
+
+            statement.execute();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

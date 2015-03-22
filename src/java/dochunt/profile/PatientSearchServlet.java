@@ -10,6 +10,7 @@ import dochunt.models.Province;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -36,9 +37,11 @@ public class PatientSearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Connection connection = null;
+        Statement statement = null;
         try {
-            Connection connection = ConnectionHub.getConnection();
-            Statement statement = connection.createStatement();
+            connection = ConnectionHub.getConnection();
+            statement = connection.createStatement();
             String sql = "SELECT provinceID, provinceName FROM Province";
 
             ResultSet resultSet = statement.executeQuery(sql);
@@ -52,6 +55,17 @@ public class PatientSearchServlet extends HttpServlet {
             request.setAttribute("provinces", provinces);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(PatientSearchServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         getServletContext().getRequestDispatcher("/PatientSearch.jsp").forward(request, response);
     }

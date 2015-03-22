@@ -6,6 +6,12 @@
 package dochunt;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  *
@@ -22,7 +28,7 @@ public class ConnectionHub {
             throws ClassNotFoundException, SQLException {
         Connection con = null;
         try {
-            con = getConnection();
+            con = OLDgetConnection();
         } finally {
             if (con != null) {
                 con.close();
@@ -30,7 +36,32 @@ public class ConnectionHub {
         }
     }
 
-    public static Connection getConnection()
+    public static Connection getConnection() throws NamingException, SQLException {
+        InitialContext cxt = new InitialContext();
+        if (cxt == null) {
+            throw new RuntimeException("Unable to create naming context");
+        }
+        Context dbContext = (Context)cxt.lookup("java:comp/env");
+        DataSource ds = (DataSource)dbContext.lookup("jdbc/myDatasource");
+
+        if (ds == null) {
+            throw new RuntimeException("Data source not found");
+        }
+        Connection connection = ds.getConnection();
+        Statement stmt = null;
+        try {
+            connection.createStatement();
+            stmt = connection.createStatement();
+            stmt.execute("USE ece356db_" + nid);
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return connection;
+    }
+
+    public static Connection OLDgetConnection()
             throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(url, user, pwd);

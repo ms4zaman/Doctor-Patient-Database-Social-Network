@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,11 +40,14 @@ public class SeeFriendRequestsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String alias = request.getParameter("alias");
+
+        Connection connection = null;
+        CallableStatement statement = null;
         try {
-            Connection connection = ConnectionHub.getConnection();
+            connection = ConnectionHub.getConnection();
 
             String sql = "{CALL SeeFriendRequests(?)}";
-            CallableStatement statement = connection.prepareCall(sql);
+            statement = connection.prepareCall(sql);
             statement.setString(1, alias);
 
             ResultSet results = statement.executeQuery();
@@ -61,6 +65,17 @@ public class SeeFriendRequestsServlet extends HttpServlet {
                 .forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(SeeFriendRequestsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
