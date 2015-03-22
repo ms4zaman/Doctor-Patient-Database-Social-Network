@@ -32,7 +32,7 @@
                     <tr>
                         <td><%= patient.alias %></td>
                         <td><%= patient.email %></td>
-                        <td><a href='AddFriendServlet?alias="<%= patient.alias %>"'>Confirm Friendship!</a></td>
+                        <td><a href='AddFriendServlet?requestee="<%= patient.alias %>"'>Confirm Friendship!</a></td>
                     </tr>
                 <% } %>
             </tbody>
