@@ -19,7 +19,7 @@
         <form method="post" action="ProfileViewServlet">
             Alias: <input type="text" name="alias"><br/>
             Province:
-            <select name="deptID">
+            <select name="provId">
                 <%! ArrayList<Province> provinces;%>
                 <%
                     provinces = (ArrayList<Province>)request.getAttribute("provinces");
