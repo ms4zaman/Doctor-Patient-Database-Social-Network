@@ -11,22 +11,35 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>DocHunt! | Profile View</title>
+        <title>DocHunt! | Patient Search Results</title>
     </head>
     <body>
-        <h1>Profile View</h1>
-        <%! ArrayList<Patient> patients;%>
-        <%
-            patients = (ArrayList<Patient>)request.getAttribute("patients");
-        %>
-
-        <% for(Patient patient : patients) { %>
-            <%= patient.alias %>
-            <%= patient.city %>
-            <%= patient.province %>
-            <%= patient.numReviews %>
-            <%= patient.latestReviewDate %>
-            <br/>
-        <% } %>
+        <h1>Patient Search Results</h1>
+        <table>
+            <thead>
+                <tr>
+                    <td>Alias</td>
+                    <td>City</td>
+                    <td>Province</td>
+                    <td>Number of Reviews Written</td>
+                    <td>Latest Review Date</td>
+                </tr>
+            </thead>
+            <tbody>
+                <%! ArrayList<Patient> patients;%>
+                <%
+                    patients = (ArrayList<Patient>)request.getAttribute("patients");
+                %>
+                <% for(Patient patient : patients) { %>
+                    <tr>
+                        <td><%= patient.alias %></td>
+                        <td><%= patient.city %></td>
+                        <td><%= patient.province %></td>
+                        <td><%= patient.numReviews %></td>
+                        <td><%= patient.latestReviewDate %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </body>
 </html>

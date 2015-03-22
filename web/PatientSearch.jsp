@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>DocHunt! | Profile Search</title>
+        <title>DocHunt! | Patient Search</title>
     </head>
     <body>
         <h1>Search</h1>
