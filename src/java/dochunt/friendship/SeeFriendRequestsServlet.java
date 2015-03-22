@@ -50,7 +50,7 @@ public class SeeFriendRequestsServlet extends HttpServlet {
             ArrayList<Patient> friendRequests = new ArrayList<>();
             while(results.next()) {
                 Patient patient = new Patient();
-                patient.alias = results.getString("requestee");
+                patient.alias = results.getString("requester");
                 patient.email = results.getString("email");
                 friendRequests.add(patient);
             }
