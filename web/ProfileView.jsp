@@ -4,6 +4,8 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.models.Patient"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,10 +15,18 @@
     </head>
     <body>
         <h1>Profile View</h1>
-        <%! String alias;%>
+        <%! ArrayList<Patient> patients;%>
         <%
-            alias = (String)request.getAttribute("newalias");
+            patients = (ArrayList<Patient>)request.getAttribute("patients");
         %>
-        <%= alias %>
+
+        <% for(Patient patient : patients) { %>
+            <%= patient.alias %>
+            <%= patient.city %>
+            <%= patient.province %>
+            <%= patient.numReviews %>
+            <%= patient.latestReviewDate %>
+            <br/>
+        <% } %>
     </body>
 </html>

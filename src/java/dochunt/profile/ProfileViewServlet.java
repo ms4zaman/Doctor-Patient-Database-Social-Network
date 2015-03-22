@@ -6,8 +6,16 @@
 package dochunt.profile;
 
 import dochunt.ConnectionHub;
+import dochunt.helpers.StringHelper;
+import dochunt.models.Patient;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -33,17 +41,76 @@ public class ProfileViewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String alias = request.getParameter("alias");
-        request.setAttribute("newalias", "Got: " + alias);
+        String provId = request.getParameter("provId");
+        String city = request.getParameter("city");
+
         try {
-            Connection connection = ConnectionHub.getConnection();
-            // Determine the type of profile we're grabbing
-            // Grab that profile
+            ArrayList<Patient> patients = searchPatients(alias, provId, city);
+            request.setAttribute("patients", patients);
         } catch (Exception ex) {
             Logger.getLogger(ProfileViewServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         getServletContext().getRequestDispatcher("/ProfileView.jsp").forward(request, response);
     }
 
+    private ArrayList<Patient> searchPatients(
+            String alias,
+            String provId,
+            String city) throws SQLException, ClassNotFoundException {
+        String sql =
+                "SELECT " +
+                "    pat.alias, " +
+                "    prov.provinceName, " +
+                "    pat.city, " +
+                "    COUNT(r.reviewID) numReviews, " +
+                "    MAX(r.creationDate) latestReviewDate " +
+                "FROM Patient pat " +
+                "INNER JOIN Province prov ON (pat.provinceID = prov.provinceID)" +
+                "LEFT JOIN Review r ON (r.reviewee = pat.alias) " +
+                "WHERE TRUE ";
+        if (!StringHelper.isNullOrEmpty(alias)) {
+            sql += " AND pat.alias = ? ";
+        }
+        if (!StringHelper.isNullOrEmpty(provId)) {
+            sql += " AND pat.provinceID = ? ";
+        }
+        if (!StringHelper.isNullOrEmpty(city)) {
+            sql += " AND pat.city = ? ";
+        }
+        sql += " GROUP BY pat.alias";
+        Connection connection = ConnectionHub.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        int currentParamIndex = 1;
+        if (!StringHelper.isNullOrEmpty(alias)) {
+            statement.setString(currentParamIndex++, alias);
+        }
+        if (!StringHelper.isNullOrEmpty(provId)) {
+            statement.setString(currentParamIndex++, provId);
+        }
+        if (!StringHelper.isNullOrEmpty(city)) {
+            statement.setString(currentParamIndex++, city);
+        }
+
+        ResultSet results = statement.executeQuery();
+
+        ArrayList<Patient> patients = new ArrayList<>();
+        while(results.next()) {
+            Patient patient = new Patient();
+            patient.alias = results.getString("alias");
+            patient.city = results.getString("city");
+            patient.province = results.getString("provinceName");
+
+            patient.numReviews = results.getInt("numReviews");
+            Timestamp timestamp = results.getTimestamp("latestReviewDate");
+            if (timestamp != null) {
+                patient.latestReviewDate = timestamp.getTime();
+            }
+
+            patients.add(patient);
+        }
+        return patients;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

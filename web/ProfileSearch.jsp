@@ -20,6 +20,7 @@
             Alias: <input type="text" name="alias"><br/>
             Province:
             <select name="provId">
+                <!-- <option value="">(unspecified)</option> -->
                 <%! ArrayList<Province> provinces;%>
                 <%
                     provinces = (ArrayList<Province>)request.getAttribute("provinces");
