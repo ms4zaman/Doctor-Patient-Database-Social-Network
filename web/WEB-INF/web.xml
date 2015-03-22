@@ -24,6 +24,10 @@
         <servlet-name>PatientSearchServlet</servlet-name>
         <servlet-class>dochunt.profile.PatientSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SeeFriendRequestsServlet</servlet-name>
+        <servlet-class>dochunt.friendship.SeeFriendRequestsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PatientSearchResultsServlet</servlet-name>
         <url-pattern>/PatientSearchResultsServlet</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>PatientSearchServlet</servlet-name>
         <url-pattern>/PatientSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeeFriendRequestsServlet</servlet-name>
+        <url-pattern>/SeeFriendRequestsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
