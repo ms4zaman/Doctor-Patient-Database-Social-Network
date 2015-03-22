@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.LoginUtil"%>
 <%@page import="dochunt.models.Patient"%>
 <%@page import="java.util.ArrayList"%>
 
@@ -15,6 +16,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% LoginUtil.assertUserLoggedIn(session, response); %>
         <table>
             <thead>
                 <tr>

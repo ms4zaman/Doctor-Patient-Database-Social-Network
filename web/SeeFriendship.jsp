@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.LoginUtil"%>
 <%@page import="java.util.ArrayList"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,6 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% LoginUtil.assertUserLoggedIn(session, response); %>
         <h1>Hello World!</h1>
         <%! ArrayList<String> friends;%>
         <%

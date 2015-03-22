@@ -10,7 +10,7 @@
     LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
     if (loginInfo == null) {
 %>
-    <a href="UserLoginServlet">Login!</a><br/>
+    <a href="UserLogin.jsp">Login!</a><br/>
 <% } else { %>
     Welcome Back! <%= loginInfo.alias %> (<%= loginInfo.getLevelAsString() %>)<br/>
     <a href="UserLogoutServlet">Logout!</a><br/>

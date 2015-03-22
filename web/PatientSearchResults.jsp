@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.LoginUtil"%>
 <%@page import="dochunt.models.Patient"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,6 +15,7 @@
         <title>DocHunt! | Patient Search Results</title>
     </head>
     <body>
+        <% LoginUtil.assertUserLoggedIn(session, response); %>
         <h1>Patient Search Results</h1>
         <table>
             <thead>

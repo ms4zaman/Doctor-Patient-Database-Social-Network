@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.LoginUtil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dochunt.models.Province"%>
 
@@ -15,6 +16,7 @@
         <title>DocHunt! | Patient Search</title>
     </head>
     <body>
+        <% LoginUtil.assertUserLoggedIn(session, response); %>
         <h1>Search</h1>
         <form method="post" action="PatientSearchResultsServlet">
             Alias: <input type="text" name="alias"><br/>

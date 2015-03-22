@@ -27,7 +27,7 @@
             </li>
             <li>
                 <form method="post" action="SeeFriendRequestsServlet">
-                    See Friend Requets for Alias: <input type="text" name="alias"><br/>
+                    See Friend Request for Alias: <input type="text" name="alias"><br/>
                     <input type="submit" value="See!">
                 </form>
             </li>
