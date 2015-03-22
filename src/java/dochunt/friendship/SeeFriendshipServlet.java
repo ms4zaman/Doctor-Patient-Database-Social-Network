@@ -8,7 +8,10 @@ package dochunt.friendship;
 import dochunt.ConnectionHub;
 import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -36,8 +39,21 @@ public class SeeFriendshipServlet extends HttpServlet {
         String alias = request.getParameter("alias");
         try {
             Connection connection = ConnectionHub.getConnection();
-            // Query friendship
-            // Return that list
+
+            String sql = "{CALL SeeFriends(?)}";
+            CallableStatement statement = connection.prepareCall(sql);
+            statement.setString(1, alias);
+
+            ResultSet results = statement.executeQuery();
+            ArrayList<String> friends = new ArrayList<>();
+            while(results.next()) {
+                friends.add(results.getString("requestee"));
+            }
+            request.setAttribute("friends", friends);
+
+            getServletContext()
+                .getRequestDispatcher("/SeeFriendship.jsp")
+                .forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -16,6 +16,12 @@
         Please select one of the following:
         <ul>
             <li><a href="PatientSearchServlet">Profile View</a></li>
+            <li>
+                <form method="post" action="SeeFriendshipServlet">
+                    See Friendship for Alias: <input type="text" name="alias"><br/>
+                    <input type="submit" value="See!">
+                </form>
+            </li>
         </ul>
     </body>
 </html>
