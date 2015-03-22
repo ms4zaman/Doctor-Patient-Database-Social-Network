@@ -15,14 +15,7 @@
     </head>
     <body>
         <h1>DocHunt!</h1>
-        <%
-            LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-            if (loginInfo != null) {
-        %>
-            Welcome Back! <%= loginInfo.alias %> (<%= loginInfo.getLevelAsString() %>)<br/>
-            <a href="UserLogoutServlet">Logout!</a><br/>
-            <br/>
-        <% } %>
+        <%@include file="includes/AccountInfo.jsp" %>
         Please select one of the following:
         <ul>
             <li><a href="PatientSearchServlet">Profile View</a></li>
