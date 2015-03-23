@@ -11,9 +11,11 @@ import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -43,7 +45,17 @@ public class ViewReviewServlet extends HttpServlet {
 
         try {
             Review review = queryReview(reviewId);
-            request.setAttribute("review", review);
+
+            if (review != null) {
+                String prevReviewId = getPrevReviewId(
+                        review.date, review.doctorAlias);
+                String nextReviewId = getNextReviewId(
+                        review.date, review.doctorAlias);
+
+                request.setAttribute("review", review);
+                request.setAttribute("prevReviewId", prevReviewId);
+                request.setAttribute("nextReviewId", nextReviewId);
+            }
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,6 +76,7 @@ public class ViewReviewServlet extends HttpServlet {
                     "  r.reviewID, " +
                     "  r.reviewee, " +
                     "  d.firstname, " +
+                    "  d.lastname, " +
                     "  r.starRating, " +
                     "  r.comments, " +
                     "  r.creationDate " +
@@ -79,9 +92,10 @@ public class ViewReviewServlet extends HttpServlet {
                 review.reviewId = reviewId;
                 review.doctorAlias = results.getString("reviewee");
                 review.doctorFirstName = results.getString("firstname");
+                review.doctorLastName = results.getString("lastname");
                 review.rating = results.getInt("starRating");
                 review.comments = results.getString("comments");
-                review.date = results.getDate("creationDate").getTime();
+                review.date = results.getTimestamp("creationDate").getTime();
             }
         } finally {
             if (statement != null) {
@@ -94,6 +108,79 @@ public class ViewReviewServlet extends HttpServlet {
         return review;
     }
 
+    public String getNextReviewId(long dateMsSinceEpoch, String doctorAlias)
+            throws NamingException, SQLException {
+        Timestamp timestamp = new Timestamp(dateMsSinceEpoch);
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        String nextReviewId = null;
+        try {
+            connection = ConnectionHub.getConnection();
+
+            String sql =
+                    "SELECT reviewID " +
+                    "FROM Review " +
+                    "WHERE creationDate > ? " +
+                    "  AND reviewee = ? " +
+                    "ORDER BY creationDate ASC " +
+                    "LIMIT 1 ";
+            statement = connection.prepareStatement(sql);
+            statement.setTimestamp(1, timestamp);
+            statement.setString(2, doctorAlias);
+
+            ResultSet results = statement.executeQuery();
+            if (results.next()) { // should only have 1 result
+                nextReviewId = results.getString("reviewID");
+            }
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return nextReviewId;
+    }
+
+    public String getPrevReviewId(long dateMsSinceEpoch, String doctorAlias)
+            throws NamingException, SQLException {
+        Timestamp timestamp = new Timestamp(dateMsSinceEpoch);
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        String prevReviewId = null;
+        try {
+            connection = ConnectionHub.getConnection();
+
+            String sql =
+                    "SELECT reviewID " +
+                    "FROM Review " +
+                    "WHERE creationDate < ? " +
+                    "  AND reviewee = ? " +
+                    "ORDER BY creationDate DESC " +
+                    "LIMIT 1 ";
+            statement = connection.prepareStatement(sql);
+            statement.setTimestamp(1, timestamp);
+            statement.setString(2, doctorAlias);
+
+            ResultSet results = statement.executeQuery();
+            if (results.next()) { // should only have 1 result
+                prevReviewId = results.getString("reviewID");
+            }
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return prevReviewId;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

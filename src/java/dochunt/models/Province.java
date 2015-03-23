@@ -17,4 +17,8 @@ public class Province {
         this.provId = provId;
         this.provName = provName;
     }
+
+    public Province() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

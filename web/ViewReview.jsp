@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.StringHelper"%>
 <%@page import="dochunt.models.Review"%>
 <%@page import="dochunt.helpers.LoginUtil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,13 +21,20 @@
         <%
             Review review = (Review)request.getAttribute("review");
             if (review != null) {
+                String prevReviewId = (String)request.getAttribute("prevReviewId");
+                String nextReviewId = (String)request.getAttribute("nextReviewId");
         %>
-            Doctor: <%= review.doctorFirstName %><br/>
+            Doctor: <%= review.doctorLastName %>, <%= review.doctorFirstName %><br/>
             Date: <%= review.date %><br/>
             Rating: <%= review.rating %><br/>
             Comments: <br/>
             <%= review.comments %><br/>
-            TODO: Prev and next button
+            <% if (!StringHelper.isNullOrEmpty(prevReviewId)) { %>
+                <a href="ViewReviewServlet?reviewId=<%= prevReviewId %>">Prev</a>
+            <% } %>
+            <% if (!StringHelper.isNullOrEmpty(nextReviewId)) { %>
+                <a href="ViewReviewServlet?reviewId=<%= nextReviewId %>">Next</a>
+            <% } %>
         <% } %>
     </body>
 </html>

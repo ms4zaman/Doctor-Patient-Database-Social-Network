@@ -13,6 +13,7 @@ public class Review {
     public String reviewId;
     public String doctorAlias;
     public String doctorFirstName;
+    public String doctorLastName;
     public int rating;
     public String comments;
     public long date; // Stored as ms since epoch

@@ -9,4 +9,5 @@ Finished Back-end Pages:
   - UserLogin.jsp
   - WriteDoctorReview.jsp
   - ViewReview.jsp
+  - DoctorProfile.jsp
   - Append to list each time one is done

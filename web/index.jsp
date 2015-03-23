@@ -37,6 +37,12 @@
                     <input type="submit" value="View Review">
                 </form>
             </li>
+            <li>
+                <form method="post" action="DoctorProfileServlet">
+                    View Doctor Profile with alias: <input type="text" name="doctorAlias"><br/>
+                    <input type="submit" value="View Profile">
+                </form>
+            </li>
         </ul>
     </body>
 </html>
