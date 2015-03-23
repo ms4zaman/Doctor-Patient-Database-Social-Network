@@ -11,7 +11,7 @@ SELECT AVG(r.starRating), COUNT(r.reviewID)
 INTO avg_star, num_review
 FROM Doctor d
 INNER JOIN Review r ON (d.alias = r.reviewee)
-WHERE r.reviewee = "doc_aiken"
+WHERE r.reviewee = doc_alias 
 GROUP BY r.reviewee;
 
 END
