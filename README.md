@@ -7,4 +7,6 @@ Finished Back-end Pages:
   - SeeFriendship.jsp
   - SeeFriendRequests.jsp
   - UserLogin.jsp
+  - WriteDoctorReview.jsp
+  - ViewReview.jsp
   - Append to list each time one is done

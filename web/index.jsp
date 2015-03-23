@@ -31,6 +31,12 @@
                     <input type="submit" value="See!">
                 </form>
             </li>
+            <li>
+                <form method="post" action="ViewReviewServlet">
+                    View Review with ID: <input type="text" name="reviewId"><br/>
+                    <input type="submit" value="View Review">
+                </form>
+            </li>
         </ul>
     </body>
 </html>

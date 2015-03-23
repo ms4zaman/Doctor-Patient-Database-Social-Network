@@ -5,6 +5,7 @@
  */
 package dochunt.helpers;
 
+import dochunt.models.LoginInfo;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpSession;
  */
 public class LoginUtil {
     public static void assertUserLoggedIn(HttpSession session, HttpServletResponse response) {
-        Object loginInfo = session.getAttribute("loginInfo");
+        LoginInfo loginInfo = getLoggedInUser(session);
         if (loginInfo != null) {
             return;
         }
@@ -26,5 +27,9 @@ public class LoginUtil {
         } catch (IOException ex) {
             Logger.getLogger(LoginUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static LoginInfo getLoggedInUser(HttpSession session) {
+        return (LoginInfo)session.getAttribute("loginInfo");
     }
 }

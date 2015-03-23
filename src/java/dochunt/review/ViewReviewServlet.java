@@ -6,12 +6,13 @@
 package dochunt.review;
 
 import dochunt.ConnectionHub;
-import dochunt.helpers.LoginUtil;
-import dochunt.models.LoginInfo;
+import dochunt.models.Review;
 import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrychung
  */
-public class AddReviewServlet extends HttpServlet {
+public class ViewReviewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,42 +39,50 @@ public class AddReviewServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
-        String patientAlias = loginInfo.alias;
-        String doctorAlias = request.getParameter("d_alias"); // hidden element on form
-        int rating = Integer.parseInt(request.getParameter("rating"));
-        String comments = request.getParameter("comments");
+        String reviewId = request.getParameter("reviewId");
 
         try {
-            addReview(patientAlias, doctorAlias, rating, comments);
+            Review review = queryReview(reviewId);
+            request.setAttribute("review", review);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // TODO: Redirect to doctor's profile
-        response.sendRedirect("index.jsp");
+        getServletContext()
+            .getRequestDispatcher("/ViewReview.jsp")
+            .forward(request, response);
     }
 
-    private void addReview(
-            String patientAlias,
-            String doctorAlias,
-            int rating,
-            String comments) throws SQLException, NamingException {
+    private Review queryReview(String reviewId) throws SQLException, NamingException {
         Connection connection = null;
         PreparedStatement statement = null;
+
+        Review review = null;
         try {
             connection = ConnectionHub.getConnection();
             String sql =
-                    "INSERT INTO Review "
-                    + "(reviewer, reviewee, starRating, comments, creationDate) "
-                    + "VALUES (?, ?, ?, ?, NOW())";
-            statement = connection.prepareCall(sql);
+                    "SELECT " +
+                    "  r.reviewID, " +
+                    "  r.reviewee, " +
+                    "  d.firstname, " +
+                    "  r.starRating, " +
+                    "  r.comments, " +
+                    "  r.creationDate " +
+                    "FROM Review r " +
+                    "INNER JOIN Doctor d ON (d.alias = r.reviewee) " +
+                    "WHERE r.reviewID = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, reviewId);
 
-            statement.setString(1, patientAlias);
-            statement.setString(2, doctorAlias);
-            statement.setInt(3, rating);
-            statement.setString(4, comments);
-
-            statement.execute();
+            ResultSet results = statement.executeQuery();
+            if (results.next()) { // Only 1 result
+                review = new Review();
+                review.reviewId = reviewId;
+                review.doctorAlias = results.getString("reviewee");
+                review.doctorFirstName = results.getString("firstname");
+                review.rating = results.getInt("starRating");
+                review.comments = results.getString("comments");
+                review.date = results.getDate("creationDate").getTime();
+            }
         } finally {
             if (statement != null) {
                 statement.close();
@@ -82,7 +91,9 @@ public class AddReviewServlet extends HttpServlet {
                 connection.close();
             }
         }
+        return review;
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

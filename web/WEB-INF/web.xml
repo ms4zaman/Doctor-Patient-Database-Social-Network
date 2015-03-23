@@ -36,6 +36,10 @@
         <servlet-name>UserLogoutServlet</servlet-name>
         <servlet-class>dochunt.UserLogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewReviewServlet</servlet-name>
+        <servlet-class>dochunt.review.ViewReviewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PatientSearchResultsServlet</servlet-name>
         <url-pattern>/PatientSearchResultsServlet</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>UserLogoutServlet</servlet-name>
         <url-pattern>/UserLogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewReviewServlet</servlet-name>
+        <url-pattern>/ViewReviewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
