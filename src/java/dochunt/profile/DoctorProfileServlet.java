@@ -84,6 +84,7 @@ public class DoctorProfileServlet extends HttpServlet {
             ResultSet results = statement.executeQuery();
             if (results.next()) { // Should have only 1 result
                 doctor = new Doctor();
+                doctor.alias = doctorAlias;
                 doctor.firstName = results.getString("firstName");
                 doctor.lastName = results.getString("lastName");
                 doctor.gender = results.getInt("gender");

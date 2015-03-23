@@ -40,7 +40,7 @@ public class AddReviewServlet extends HttpServlet {
             throws ServletException, IOException {
         LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
         String patientAlias = loginInfo.alias;
-        String doctorAlias = request.getParameter("d_alias"); // hidden element on form
+        String doctorAlias = request.getParameter("doctorAlias"); // hidden element on form
         int rating = Integer.parseInt(request.getParameter("rating"));
         String comments = request.getParameter("comments");
 

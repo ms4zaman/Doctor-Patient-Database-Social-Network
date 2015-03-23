@@ -61,6 +61,9 @@
                     <% } %>
                 </tbody>
             </table>
+            <a href="WriteDoctorReview.jsp?doctorAlias=<%= doctor.alias %>">
+                Write a new review!
+            </a>
         <% } %>
     </body>
 </html>

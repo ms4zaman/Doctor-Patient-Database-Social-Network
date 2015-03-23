@@ -15,21 +15,29 @@
     <body>
         <% LoginUtil.assertUserLoggedIn(session, response); %>
         <%@include file="includes/AccountInfo.jsp" %>
-        <h1>Write Doctor Review</h1>
-        <form method="post" action="AddReviewServlet">
-            <input type="hidden" name="d_alias" value="doc_aiken"> <!-- TODO: REPLACE WITH VALID TINGz -->
-            Comment: <br/>
-            <textarea name="comments" rows="5" cols="30" wrap="virtual"></textarea><br/>
-            Rating:
-            <select name="rating">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select><br/>
 
-            <input type="submit" value="Rate that Doc!">
-        </form>
+        <%
+            String doctorAlias = request.getParameter("doctorAlias");
+            if (doctorAlias == null) {
+        %>
+            TODO: Proper error handling
+        <% } else { %>
+            <h1>Write Doctor Review</h1>
+            <form method="post" action="AddReviewServlet">
+                <input type="hidden" name="doctorAlias" value="<%= doctorAlias %>">
+                Comment: <br/>
+                <textarea name="comments" rows="5" cols="30" wrap="virtual"></textarea><br/>
+                Rating:
+                <select name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select><br/>
+
+                <input type="submit" value="Rate that Doc!">
+            </form>
+        <% } %>
     </body>
 </html>
