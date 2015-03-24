@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `ece356db_dctittel`.`Review` (
   `reviewID` INT NOT NULL AUTO_INCREMENT,
   `reviewer` VARCHAR(30) NULL,
   `reviewee` VARCHAR(30) NULL,
-  `starRating` INT NULL,
+  `starRating` DOUBLE NULL,
   `comments` VARCHAR(1000) NULL,
   `creationDate` DATETIME NULL,
   PRIMARY KEY (`reviewID`),
