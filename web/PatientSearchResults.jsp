@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.DateUtil"%>
 <%@page import="dochunt.helpers.LoginUtil"%>
 <%@page import="dochunt.models.Patient"%>
 <%@page import="java.util.ArrayList"%>
@@ -38,8 +39,8 @@
                         <td><%= patient.city %></td>
                         <td><%= patient.province %></td>
                         <td><%= patient.numReviews %></td>
-                        <td><%= patient.latestReviewDate %></td>
-                        <td><a href="AddFriendshipServlet?requestee=<%= patient.alias %>">Add As Friend</a></td
+                        <td><%= DateUtil.formatDateFromEpoch(patient.latestReviewDate) %></td>
+                        <td><a href="AddFriendshipServlet?requestee=<%= patient.alias %>">Add As Friend</a></td>
                     </tr>
                 <% } %>
             </tbody>

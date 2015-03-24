@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.DateUtil"%>
 <%@page import="dochunt.helpers.StringHelper"%>
 <%@page import="dochunt.models.Review"%>
 <%@page import="dochunt.helpers.LoginUtil"%>
@@ -25,7 +26,7 @@
                 String nextReviewId = (String)request.getAttribute("nextReviewId");
         %>
             Doctor: <%= review.doctorLastName %>, <%= review.doctorFirstName %><br/>
-            Date: <%= review.date %><br/>
+            Date: <%= DateUtil.formatDateFromEpoch(review.date) %><br/>
             Rating: <%= review.rating %><br/>
             Comments: <br/>
             <%= review.comments %><br/>

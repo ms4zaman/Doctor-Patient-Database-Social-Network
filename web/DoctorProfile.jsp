@@ -4,6 +4,7 @@
     Author     : henrychung
 --%>
 
+<%@page import="dochunt.helpers.DateUtil"%>
 <%@page import="dochunt.models.Review"%>
 <%@page import="dochunt.models.Address"%>
 <%@page import="dochunt.helpers.LoginUtil"%>
@@ -57,7 +58,7 @@
                         </a></td>
                         <td><%= review.rating %></td>
                         <td><%= review.comments %></td>
-                        <td><%= review.date %></td>
+                        <td><%= DateUtil.formatDateFromEpoch(review.date) %></td>
                     </tr>
                     <% } %>
                 </tbody>
