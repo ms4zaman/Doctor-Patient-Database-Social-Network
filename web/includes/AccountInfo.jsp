@@ -12,7 +12,7 @@
 %>
     <a href="UserLogin.jsp">Login!</a><br/>
 <% } else { %>
-    Welcome Back! <%= loginInfo.alias %> (<%= loginInfo.getLevelAsString() %>)<br/>
+    Welcome Back to to Doc Hunt! <%= loginInfo.alias %> (<%= loginInfo.getLevelAsString() %>)<br/>
     <a href="UserLogoutServlet">Logout!</a><br/>
     <br/>
 <% } %>

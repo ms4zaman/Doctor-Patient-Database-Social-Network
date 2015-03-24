@@ -13,28 +13,32 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>DocHunt! | Login</title>
+        <link rel="stylesheet" type="text/css" href="login.css">
     </head>
     <body>
-        <h1>Welcome back!</h1>
-        <%
-            LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-            if (loginInfo != null) {
-                response.sendRedirect("index.jsp");
-            }
-        %>
+        <div class="form">
+            <h1>Doc Hunt! Login</h1>
+            <%
+                LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
+                if (loginInfo != null) {
+                    response.sendRedirect("index.jsp");
+                }
+            %>
 
-        <%! String authMessage; %>
-        <%
-            authMessage = (String)request.getAttribute("auth");
-            if (!StringHelper.isNullOrEmpty(authMessage)) {
-        %>
-            <%= authMessage %>
-        <% } %>
-        <form method="post" action="UserLoginServlet">
-            Alias: <input type="text" name="alias"> <br/>
-            Password: <input type="password" name="password"> <br/>
+            <%! String authMessage; %>
+            <%
+                authMessage = (String)request.getAttribute("auth");
+                if (!StringHelper.isNullOrEmpty(authMessage)) {
+            %>
+                <%= authMessage %>
+            <% } %>
+            <form method="post" action="UserLoginServlet">
+                <input type="text" name="alias" class="textbox" placeholder="Alias"> <br/>
+                <input type="password" name="password" class="textbox" placeholder="Password"> <br/>
 
-            <input type="submit" value="Login">
-        </form>
+                <input type="submit" value="Login" id="submitButton">
+            </form>
+        </div>
+        <div class="grass"></div>
     </body>
 </html>
