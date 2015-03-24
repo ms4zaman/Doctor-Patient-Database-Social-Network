@@ -42,8 +42,19 @@
         <input type="text" name="postalCode" /><br/>
         <label for="reviewedByFriend">Reviewed by Friend:</label>
         <input type="checkbox" name="reviewedByFriend" /><br>
-        <label for="comment">Comment Contains:</label>        
+        <label for="comment">Comment Contains:</label>
         <input type="text" name="comment" /><br/>
+
+        <label for="rating">Rating:</label>
+        <select name="rating">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br/>
+
         <input type="submit" Value="Search">
     </form>
 </html>

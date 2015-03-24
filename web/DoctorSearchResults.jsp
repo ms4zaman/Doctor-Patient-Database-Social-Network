@@ -37,7 +37,13 @@
                             <%= doctor.alias %>
                         </a></td>
                         <td><%= doctor.lastName %>, <%= doctor.firstName %></td>
-                        <td><%= doctor.rating %></td>
+                        <td>
+                            <% if (doctor.rating < 0) { %>
+                                n/a
+                            <% } else { %>
+                                <%= doctor.rating %>
+                            <% } %>
+                        </td>
                         <td><%= doctor.numReviews %></td>
                     </tr>
                 <% } %>

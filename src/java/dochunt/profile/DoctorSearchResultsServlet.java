@@ -53,6 +53,7 @@ public class DoctorSearchResultsServlet extends HttpServlet {
         String postalCode = request.getParameter("postalCode");
         boolean reviewedByFriend = request.getParameter("reviewedByFriend") != null;
         String comment = request.getParameter("comment");
+        double rating = Double.parseDouble(request.getParameter("rating"));
         
         try {
             ArrayList<Doctor> doctors = searchDoctors(
@@ -64,7 +65,8 @@ public class DoctorSearchResultsServlet extends HttpServlet {
                     provId,
                     postalCode,
                     reviewedByFriend,
-                    comment);
+                    comment,
+                    rating);
             request.setAttribute("doctors", doctors);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,21 +85,22 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             String provId,
             String postalCode,
             boolean reviewedByFriend,
-            String comment) throws SQLException, ClassNotFoundException, NamingException {
+            String comment,
+            double rating) throws SQLException, ClassNotFoundException, NamingException {
         Connection connection = null;
         PreparedStatement statement = null;
 
         ArrayList<Doctor> doctors = new ArrayList<>();
         try {
             String sql =
-                    "Select Review.reviewee, Doctor.firstName, Doctor.lastName, avg(starRating) rating, count(Distinct reviewID) numReviews " +
-                    "From Doctor " +
-                    "Join Specialization, hasSpecialization, Address, hasAddress, Review " +
-                    "Where Doctor.alias = hasSpecialization.alias " +
-                    "AND hasSpecialization.hasSpecialization = Specialization.specializationID " +
-                    "AND Doctor.alias = hasAddress.alias " +
-                    "AND hasAddress.hasAddress = Address.addressID " +
-                    "AND Reviewee = Doctor.alias ";
+                    "SELECT Doctor.alias, Doctor.firstName, Doctor.lastName, avg(starRating) rating, count(Distinct reviewID) numReviews " +
+                    "FROM Doctor " +
+                    "LEFT JOIN Review ON (Review.Reviewee = Doctor.alias) " +
+                    "LEFT JOIN hasSpecialization ON (Doctor.alias = hasSpecialization.alias) " +
+                    "LEFT JOIN Specialization ON (hasSpecialization.hasSpecialization = Specialization.specializationID) " +
+                    "LEFT JOIN hasAddress ON (Doctor.alias = hasAddress.alias) " +
+                    "LEFT JOIN Address ON (hasAddress.hasAddress = Address.addressID) " +
+                    "WHERE TRUE ";
             if (!StringHelper.isNullOrEmpty(firstName)) {
                 sql += " AND Doctor.firstName = ? ";
             }
@@ -132,9 +135,12 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             if (!StringHelper.isNullOrEmpty(comment)) {
                 sql += " AND comments like ? ";
             }
-            sql +=
-                    " Group by reviewee " +
-                    " Having avg(starRating) > 0 ";
+            sql += " GROUP BY Doctor.alias ";
+
+            if (rating > 0) {
+                sql += " HAVING avg(starRating) > ? ";
+            }
+
             connection = ConnectionHub.getConnection();
             statement = connection.prepareStatement(sql);
 
@@ -164,15 +170,19 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             if (!StringHelper.isNullOrEmpty(comment)) {
                 statement.setString(currentParamIndex++, "%" + comment + "%");
             }
+            if (rating > 0) {
+                statement.setDouble(currentParamIndex++, rating);
+            }
 
             ResultSet results = statement.executeQuery();
 
             while(results.next()) {
                 Doctor doctor = new Doctor();
-                doctor.alias = results.getString("reviewee");
+                doctor.alias = results.getString("alias");
                 doctor.firstName = results.getString("firstName");
                 doctor.lastName = results.getString("lastName");
-                doctor.rating = results.getDouble("rating");
+                doctor.rating = results.getObject("rating") == null ?
+                        -1 : results.getDouble("rating");
                 doctor.numReviews = results.getInt("numReviews");
 
                 doctors.add(doctor);
