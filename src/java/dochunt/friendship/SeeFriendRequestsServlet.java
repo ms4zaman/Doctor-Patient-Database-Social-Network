@@ -10,13 +10,14 @@ import dochunt.models.Patient;
 import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,23 +42,8 @@ public class SeeFriendRequestsServlet extends HttpServlet {
             throws ServletException, IOException {
         String alias = request.getParameter("alias");
 
-        Connection connection = null;
-        CallableStatement statement = null;
         try {
-            connection = ConnectionHub.getConnection();
-
-            String sql = "{CALL SeeFriendRequests(?)}";
-            statement = connection.prepareCall(sql);
-            statement.setString(1, alias);
-
-            ResultSet results = statement.executeQuery();
-            ArrayList<Patient> friendRequests = new ArrayList<>();
-            while(results.next()) {
-                Patient patient = new Patient();
-                patient.alias = results.getString("requester");
-                patient.email = results.getString("email");
-                friendRequests.add(patient);
-            }
+            ArrayList<Patient> friendRequests = queryFriendRequests(alias);
             request.setAttribute("friendRequests", friendRequests);
 
             getServletContext()
@@ -65,18 +51,50 @@ public class SeeFriendRequestsServlet extends HttpServlet {
                 .forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private ArrayList<Patient> queryFriendRequests(String alias) throws SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        ArrayList<Patient> friendRequests = new ArrayList<>();
+        try {
+            connection = ConnectionHub.getConnection();
+
+            String sql =
+                    "SELECT " +
+                    "  f.requester, " +
+                    "  p.email " +
+                    "FROM Friend f " +
+                    "LEFT JOIN Patient p ON (p.alias = f.requestee) " +
+                    "WHERE f.requestee = ? " +
+                    "  AND NOT EXISTS( " +
+                    "    SELECT 1 " +
+                    "    FROM Friend inner_f " +
+                    "    WHERE inner_f.requester = ? " +
+                    "      AND inner_f.requestee = f.requester " +
+                    "  )";
+            statement = connection.prepareCall(sql);
+            statement.setString(1, alias);
+            statement.setString(2, alias);
+
+            ResultSet results = statement.executeQuery();
+            while(results.next()) {
+                Patient patient = new Patient();
+                patient.alias = results.getString("requester");
+                patient.email = results.getString("email");
+                friendRequests.add(patient);
+            }
         } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(SeeFriendRequestsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
             }
         }
+        return friendRequests;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

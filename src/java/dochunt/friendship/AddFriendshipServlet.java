@@ -6,9 +6,10 @@
 package dochunt.friendship;
 
 import dochunt.ConnectionHub;
+import dochunt.helpers.LoginUtil;
+import dochunt.models.LoginInfo;
 import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +39,8 @@ public class AddFriendshipServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String requester = request.getParameter("requester");
+        LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
+        String requester = loginInfo.alias;
         String requestee = request.getParameter("requestee");
         try {
             boolean isAlreadyFriends = isAlreadyFriends(requester, requestee);
@@ -52,11 +54,7 @@ public class AddFriendshipServlet extends HttpServlet {
                         + requestee;
             }
 
-            request.setAttribute("addFriendStatus", addFriendStatus);
-            request.setAttribute("alias", requester);
-            getServletContext()
-                .getRequestDispatcher("/SeeFriendship.jsp")
-                .forward(request, response);
+            response.sendRedirect("SeeFriendshipServlet?alias=" + requester);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,14 +94,14 @@ public class AddFriendshipServlet extends HttpServlet {
     private void addFriendship(String requester, String requestee)
             throws ClassNotFoundException, SQLException, NamingException {
         Connection connection = null;
-        CallableStatement statement = null;
+        PreparedStatement statement = null;
 
         try {
             connection = ConnectionHub.getConnection();
 
-            String sql = "{CALL AddFriendship(?, ?)}";
-            statement = connection.prepareCall(sql);
-
+            String sql =
+                    "INSERT INTO Friend (Requester, Requestee) VALUES (?, ?);";
+            statement = connection.prepareStatement(sql);
             statement.setString(1, requester);
             statement.setString(2, requestee);
 

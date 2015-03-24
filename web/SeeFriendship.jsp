@@ -16,7 +16,7 @@
     </head>
     <body>
         <% LoginUtil.assertUserLoggedIn(session, response); %>
-        <h1>Hello World!</h1>
+        <h1>Friends</h1>
         <%! ArrayList<String> friends;%>
         <%
             friends = (ArrayList<String>)request.getAttribute("friends");
@@ -26,6 +26,15 @@
         <% } %>
         <% if (friends.size() == 0) { %>
             What a loser, you have no friends
+        <% } %>
+
+        <h1>Pending</h1>
+        <%! ArrayList<String> pendingFriends;%>
+        <%
+            pendingFriends = (ArrayList<String>)request.getAttribute("pendingFriends");
+            for (String pendingFriend : pendingFriends) {
+        %>
+            <%= pendingFriend %> <br/>
         <% } %>
     </body>
 </html>
