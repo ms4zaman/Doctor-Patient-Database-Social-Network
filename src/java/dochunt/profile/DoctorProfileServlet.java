@@ -55,6 +55,17 @@ public class DoctorProfileServlet extends HttpServlet {
                 doctor.reviews.addAll(
                         queryReviewsForDoctor(doctorAlias));
 
+                double avgRating = 0;
+                int numReviews = doctor.reviews.size();
+                for(Review review : doctor.reviews) {
+                    avgRating += review.rating;
+                }
+                avgRating = numReviews > 0 ?
+                        avgRating / numReviews : -1;
+
+                doctor.rating = avgRating;
+                doctor.numReviews = numReviews;
+
                 request.setAttribute("doctor", doctor);
             }
         } catch (Exception ex) {
@@ -197,7 +208,7 @@ public class DoctorProfileServlet extends HttpServlet {
                     "SELECT reviewID, reviewer, starRating, comments, creationDate " +
                     "FROM Review " +
                     "WHERE reviewee = ? " +
-                    "ORDER BY creationDate DESC ";
+                    "ORDER BY reviewID DESC ";
             statement = connection.prepareStatement(sql);
             statement.setString(1, doctorAlias);
 

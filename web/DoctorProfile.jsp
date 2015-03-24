@@ -33,6 +33,13 @@
             <% } %>
             Gender: <%= doctor.getGenderText() %> <br/>
             No. Years Licensed: <%= doctor.numYearsLicensed %> <br/>
+            Average Rating:
+            <% if (doctor.rating < 0) { %>
+                n/a
+            <% } else { %>
+                <%= doctor.rating %>
+            <% } %> <br/>
+            No. Reviews: <%= doctor.numReviews %> <br/>
             Address(es): <br/>
             <% for(Address address : doctor.addresses) { %>
                 <%= address.toString() %> <br/>

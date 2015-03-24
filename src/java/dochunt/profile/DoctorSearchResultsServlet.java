@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -47,6 +48,10 @@ public class DoctorSearchResultsServlet extends HttpServlet {
         String patientAlias = loginInfo.alias;
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
+        int gender = StringHelper.isNullOrEmpty(request.getParameter("gender")) ?
+                -1 : Integer.parseInt(request.getParameter("gender"));
+        int numYearsLicensed = StringHelper.isNullOrEmpty(request.getParameter("numYearsLicensed")) ?
+                -1 : Integer.parseInt(request.getParameter("numYearsLicensed"));
         String specializationName = request.getParameter("specializationName");
         String city = request.getParameter("city");
         String provId = request.getParameter("provId");
@@ -60,6 +65,8 @@ public class DoctorSearchResultsServlet extends HttpServlet {
                     patientAlias,
                     firstName,
                     lastName,
+                    gender,
+                    numYearsLicensed,
                     specializationName,
                     city,
                     provId,
@@ -80,6 +87,8 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             String patientAlias,
             String firstName,
             String lastName,
+            int gender,
+            int numYearsLicensed,
             String specializationName,
             String city,
             String provId,
@@ -106,6 +115,12 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             }
             if (!StringHelper.isNullOrEmpty(lastName)) {
                 sql += " AND Doctor.lastName = ? ";
+            }
+            if (gender > -1) {
+                sql += " AND Doctor.gender = ? ";
+            }
+            if (numYearsLicensed > -1) {
+                sql += " AND Doctor.licenseYear <= ? ";
             }
             if (!StringHelper.isNullOrEmpty(specializationName)) {
                 sql += " AND Specialization.specializationName = ? ";
@@ -150,6 +165,14 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             }
             if (!StringHelper.isNullOrEmpty(lastName)) {
                 statement.setString(currentParamIndex++, lastName);
+            }
+            if (gender > -1) {
+                statement.setInt(currentParamIndex++, gender);
+            }
+            if (numYearsLicensed > -1) {
+                int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+                int licenseYear = thisYear - numYearsLicensed;
+                statement.setInt(currentParamIndex++, licenseYear);
             }
             if (!StringHelper.isNullOrEmpty(specializationName)) {
                 statement.setString(currentParamIndex++, specializationName);

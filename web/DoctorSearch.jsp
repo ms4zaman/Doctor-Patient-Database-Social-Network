@@ -21,6 +21,17 @@
         <input type="text" name="firstName" /><br/>
         <label for="lastName">Last Name:</label>
         <input type="text" name="lastName" /><br/>
+        
+        <label for="gender">Gender:</label>
+        <select name ="gender">
+            <option value="">(unspecified)</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+        </select><br/>
+
+        <label for="numYearsLicensed">No. Years Licensed</label>
+        <input type="text" name="numYearsLicensed" /><br/>
+
         <label for="specializationName">Specialization:</label>
         <input type="text" name="specName" /><br/>
         <label for="city">City:</label>
