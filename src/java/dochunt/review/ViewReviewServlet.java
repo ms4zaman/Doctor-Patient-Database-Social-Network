@@ -93,7 +93,7 @@ public class ViewReviewServlet extends HttpServlet {
                 review.doctorAlias = results.getString("reviewee");
                 review.doctorFirstName = results.getString("firstname");
                 review.doctorLastName = results.getString("lastname");
-                review.rating = results.getInt("starRating");
+                review.rating = results.getDouble("starRating");
                 review.comments = results.getString("comments");
                 review.date = results.getTimestamp("creationDate").getTime();
             }

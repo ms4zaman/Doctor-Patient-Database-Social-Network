@@ -206,7 +206,7 @@ public class DoctorProfileServlet extends HttpServlet {
                 // TODO: Do we want to query the reviewer? Confidentiality?
                 Review review = new Review();
                 review.reviewId = results.getString("reviewID");
-                review.rating = results.getInt("starRating");
+                review.rating = results.getDouble("starRating");
                 review.comments = results.getString("comments");
                 review.date = results.getTimestamp("creationDate").getTime();
 
