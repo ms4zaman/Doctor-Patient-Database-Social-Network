@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% LoginUtil.assertUserLoggedIn(session, response); %>
+        <% LoginUtil.assertDoctorLoggedIn(session, response); %>
         <%@include file="includes/AccountInfo.jsp" %>
 
         <%

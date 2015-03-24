@@ -18,6 +18,7 @@
     </head>
     <body>
         <% LoginUtil.assertUserLoggedIn(session, response); %>
+        <%@include file="includes/AccountInfo.jsp" %>
         <h1>Doctor Profile</h1>
         <%
             Doctor doctor = (Doctor)request.getAttribute("doctor");
@@ -61,9 +62,11 @@
                     <% } %>
                 </tbody>
             </table>
-            <a href="WriteDoctorReview.jsp?doctorAlias=<%= doctor.alias %>">
-                Write a new review!
-            </a>
+            <% if (LoginUtil.isDoctorLoggedIn(loginInfo)) %>
+                <a href="WriteDoctorReview.jsp?doctorAlias=<%= doctor.alias %>">
+                    Write a new review!
+                </a>
+            <% } %>
         <% } %>
     </body>
 </html>

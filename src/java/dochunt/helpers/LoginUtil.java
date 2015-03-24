@@ -29,6 +29,40 @@ public class LoginUtil {
         }
     }
 
+    public static void assertPatientLoggedIn(HttpSession session, HttpServletResponse response) {
+        LoginInfo loginInfo = getLoggedInUser(session);
+        if (loginInfo != null && loginInfo.level == 0) {
+            return;
+        }
+        session.setAttribute("loginInfo", loginInfo);
+        try {
+            response.sendRedirect("UserLogin.jsp");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void assertDoctorLoggedIn(HttpSession session, HttpServletResponse response) {
+        LoginInfo loginInfo = getLoggedInUser(session);
+        if (loginInfo != null && loginInfo.level == 1) {
+            return;
+        }
+        session.setAttribute("loginInfo", loginInfo);
+        try {
+            response.sendRedirect("UserLogin.jsp");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static boolean isPatientLoggedIn(LoginInfo loginInfo) {
+        return loginInfo != null && loginInfo.level == 0;
+    }
+
+    public static boolean isDoctorLoggedIn(LoginInfo loginInfo) {
+        return loginInfo != null && loginInfo.level == 1;
+    }
+
     public static LoginInfo getLoggedInUser(HttpSession session) {
         return (LoginInfo)session.getAttribute("loginInfo");
     }

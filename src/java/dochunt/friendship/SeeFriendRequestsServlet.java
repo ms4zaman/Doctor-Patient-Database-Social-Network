@@ -6,6 +6,8 @@
 package dochunt.friendship;
 
 import dochunt.ConnectionHub;
+import dochunt.helpers.LoginUtil;
+import dochunt.models.LoginInfo;
 import dochunt.models.Patient;
 import dochunt.profile.PatientSearchResultsServlet;
 import java.io.IOException;
@@ -40,7 +42,8 @@ public class SeeFriendRequestsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String alias = request.getParameter("alias");
+        LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
+        String alias = loginInfo.alias;
 
         try {
             ArrayList<Patient> friendRequests = queryFriendRequests(alias);
