@@ -6,8 +6,10 @@ CREATE PROCEDURE Test_RequestFriend(
 	IN requestee_alias VARCHAR(20))
 BEGIN
 
-INSERT INTO Friend
-VALUES (requestor_alias, requestee_alias);
+IF NOT EXISTS (SELECT * FROM Friend WHERE Requester = requestor_alias AND Requestee = requestee_alias) THEN
+	INSERT INTO Friend
+	VALUES (requestor_alias, requestee_alias);
+END IF;
 
 END
 @@
