@@ -39,6 +39,7 @@
                         <td><%= patient.province %></td>
                         <td><%= patient.numReviews %></td>
                         <td><%= patient.latestReviewDate %></td>
+                        <td><a href="AddFriendshipServlet?requestee=<%= patient.alias %>">Add As Friend</a></td
                     </tr>
                 <% } %>
             </tbody>

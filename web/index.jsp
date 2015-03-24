@@ -19,7 +19,8 @@
         <%@include file="includes/AccountInfo.jsp" %>
         Please select one of the following:
         <ul>
-            <li><a href="PatientSearchServlet">Profile View</a></li>
+            <li><a href="PatientSearchServlet">Patient Search</a></li>
+            <li><a href="DoctorSearchServlet">Doctor Search</a></li>
             <li>
                 <form method="post" action="SeeFriendshipServlet">
                     See Friendship for Alias: <input type="text" name="alias"><br/>
