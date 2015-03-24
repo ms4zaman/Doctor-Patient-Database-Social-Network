@@ -62,7 +62,7 @@
                     <% } %>
                 </tbody>
             </table>
-            <% if (LoginUtil.isDoctorLoggedIn(loginInfo)) { %>
+            <% if (LoginUtil.isPatientLoggedIn(loginInfo)) { %>
                 <a href="WriteDoctorReview.jsp?doctorAlias=<%= doctor.alias %>">
                     Write a new review!
                 </a>

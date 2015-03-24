@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% LoginUtil.assertDoctorLoggedIn(session, response); %>
+        <% LoginUtil.assertPatientLoggedIn(session, response); %>
         <%@include file="includes/AccountInfo.jsp" %>
 
         <%
@@ -29,11 +29,16 @@
                 <textarea name="comments" rows="5" cols="30" wrap="virtual"></textarea><br/>
                 Rating:
                 <select name="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1">0.5</option>
+                    <option value="2">1</option>
+                    <option value="3">1.5</option>
+                    <option value="4">2</option>
+                    <option value="5">2.5</option>
+                    <option value="6">3</option>
+                    <option value="7">3.5</option>
+                    <option value="8">4</option>
+                    <option value="9">4.5</option>
+                    <option value="10">5</option>
                 </select><br/>
 
                 <input type="submit" value="Rate that Doc!">
