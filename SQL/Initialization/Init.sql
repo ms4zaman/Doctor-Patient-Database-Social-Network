@@ -15,7 +15,7 @@ INSERT INTO Province (provinceID, provinceName) VALUES ('YT','Yukon');
 
 
 --Populate initial Doctors
-INSERT INTO Users (alias, level) VALUES ('doc_aiken', '1');
+INSERT INTO Users (alias, password, level) VALUES ('doc_aiken', PASSWORD(alias), '1');
 INSERT INTO Doctor (alias, firstname, lastname, gender, email, licenseYear) VALUES ('doc_aiken', 'John', 'Aikenhead', 1, 'aiken@head.com', 1990);
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (1, 'Elizabeth Street', 'Waterloo', 'ON', 'N2L2W8');
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (2, 'Aikenhead Street', 'Kitchener', 'ON', 'N2P1K2');
@@ -26,7 +26,7 @@ INSERT INTO Specialization (specializationName) VALUES ('naturopath');
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_aiken', 1);
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_aiken', 2);
 
-INSERT INTO Users (alias, level) VALUES ('doc_amnio', '1');
+INSERT INTO Users (alias, password, level) VALUES ('doc_amnio', PASSWORD(alias), '1');
 INSERT INTO Doctor (alias, firstname, lastname, gender, email, licenseYear) VALUES ('doc_amnio', 'Jane', 'Amniotic', 2, 'obgyn_clinic@rogers.com', 2005);
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (1, 'Jane Street', 'Waterloo', 'ON', 'N2L2W8');
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (2, 'Amniotic Street', 'Kitchener', 'ON', 'N2P2K5');
@@ -37,7 +37,7 @@ INSERT INTO Specialization (specializationName) VALUES ('gynecologist');
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_amnio', 3);
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_amnio', 4);
 
-INSERT INTO Users (alias, level) VALUES ('doc_umbilical', '1');
+INSERT INTO Users (alias, password, level) VALUES ('doc_umbilical', PASSWORD(alias), '1');
 INSERT INTO Doctor (alias, firstname, lastname, gender, email, licenseYear) VALUES ('doc_umbilical', 'Mary', 'Umbilical', 2, 'obgyn_clinic@rogers.com', 2006);
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (1, 'Mary Street', 'Cambridge', 'ON', 'N2L1A2');
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (2, 'Amniotic Street', 'Kitchener', 'ON', 'N2P2K5');
@@ -48,7 +48,7 @@ INSERT INTO Specialization (specializationName) VALUES ('naturopath');
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_umbilical', 5);
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_umbilical', 6);
 
-INSERT INTO Users (alias, level) VALUES ('doc_heart', '1');
+INSERT INTO Users (alias, password, level) VALUES ('doc_heart', PASSWORD(alias), '1');
 INSERT INTO Doctor (alias, firstname, lastname, gender, email, licenseYear) VALUES ('doc_heart', 'Jack', 'Hearty', 1, 'aiken@head.com', 1980);
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (1, 'Jack Street', 'Guelph', 'ON', 'N2L1G2');
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (2, 'Heart Street', 'Waterloo', 'ON', 'N2P2W5');
@@ -59,7 +59,7 @@ INSERT INTO Specialization (specializationName) VALUES ('surgeon');
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_heart', 7);
 INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_heart', 8);
 
-INSERT INTO Users (alias, level) VALUES ('doc_cutter', '1');
+INSERT INTO Users (alias, password, level) VALUES ('doc_cutter', PASSWORD(alias), '1');
 INSERT INTO Doctor (alias, firstname, lastname, gender, email, licenseYear) VALUES ('doc_cutter', 'Beth', 'Cutter', 2, 'beth@tummytuck.com', 2014);
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (1, 'Beth Street', 'Cambridge', 'ON', 'N2L1C2');
 INSERT INTO Address (number, streetName, city, provinceID, postalCode) VALUES (2, 'Cutter Street', 'Kitchener', 'ON', 'N2P2K5');
@@ -72,17 +72,17 @@ INSERT INTO hasSpecialization (alias, hasSpecialization) VALUES ('doc_cutter', 1
 
 
 --Populate initial Patients
-INSERT INTO Users (alias, level) VALUES ('pat_bob', '0');
+INSERT INTO Users (alias, password, level) VALUES ('pat_bob', PASSWORD(alias), '0');
 INSERT INTO Patient (alias, firstname, lastname, provinceID, city, email) VALUES ('pat_bob', 'Bob', 'Bobberson', 'ON', 'Waterloo', 'thebobbersons@sympatico.ca');
 
-INSERT INTO Users (alias, level) VALUES ('pat_peggy', '0');
+INSERT INTO Users (alias, password, level) VALUES ('pat_peggy', PASSWORD(alias), '0');
 INSERT INTO Patient (alias, firstname, lastname, provinceID, city, email) VALUES ('pat_peggy', 'Peggy', 'Bobberson', 'ON', 'Waterloo', 'thebobbersons@sympatico.ca');
 
-INSERT INTO Users (alias, level) VALUES ('pat_homer', '0');
+INSERT INTO Users (alias, password, level) VALUES ('pat_homer', PASSWORD(alias), '0');
 INSERT INTO Patient (alias, firstname, lastname, provinceID, city, email) VALUES ('pat_homer', 'Homer', 'Homerson', 'ON', 'Kitchener', 'homer@rogers.com');
 
-INSERT INTO Users (alias, level) VALUES ('pat_kate', '0');
+INSERT INTO Users (alias, password, level) VALUES ('pat_kate', PASSWORD(alias), '0');
 INSERT INTO Patient (alias, firstname, lastname, provinceID, city, email) VALUES ('pat_kate', 'Kate', 'Katemyer', 'ON', 'Cambridge', 'kate@hello.com');
 
-INSERT INTO Users (alias, level) VALUES ('pat_anne', '0');
+INSERT INTO Users (alias, password, level) VALUES ('pat_anne', PASSWORD(alias), '0');
 INSERT INTO Patient (alias, firstname, lastname, provinceID, city, email) VALUES ('pat_anne', 'Anne', 'MacDonald', 'ON', 'Guelph', 'anne@gmail.com');
