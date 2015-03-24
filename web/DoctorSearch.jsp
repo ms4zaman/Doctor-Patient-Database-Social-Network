@@ -16,7 +16,7 @@
     <body>
         <h1>Advanced Filter Search</h1>
     </body>
-    <form method="post" action="asdasd">
+    <form method="post" action="DoctorSearchResultsServlet">
         <label for="firstName">First Name:</label>
         <input type="text" name="firstName" /><br/>
         <label for="lastName">Last Name:</label>

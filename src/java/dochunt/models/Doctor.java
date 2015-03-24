@@ -23,6 +23,9 @@ public class Doctor {
     public ArrayList<Address> addresses = new ArrayList<>();
     public ArrayList<Review> reviews = new ArrayList<>();
 
+    public double rating;
+    public int numReviews;
+
     public String getGenderText() {
         switch(gender) {
             case 1:

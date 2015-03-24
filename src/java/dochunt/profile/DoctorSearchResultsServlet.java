@@ -6,8 +6,10 @@
 package dochunt.profile;
 
 import dochunt.ConnectionHub;
+import dochunt.helpers.LoginUtil;
 import dochunt.helpers.StringHelper;
 import dochunt.models.Doctor;
+import dochunt.models.LoginInfo;
 import dochunt.models.Patient;
 import java.io.IOException;
 import java.sql.Connection;
@@ -41,6 +43,8 @@ public class DoctorSearchResultsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
+        String patientAlias = loginInfo.alias;
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String specializationName = request.getParameter("specializationName");
@@ -52,11 +56,13 @@ public class DoctorSearchResultsServlet extends HttpServlet {
         
         try {
             ArrayList<Doctor> doctors = searchDoctors(
+                    patientAlias,
                     firstName,
                     lastName,
                     specializationName,
                     city,
                     provId,
+                    postalCode,
                     reviewedByFriend,
                     comment);
             request.setAttribute("doctors", doctors);
@@ -69,11 +75,13 @@ public class DoctorSearchResultsServlet extends HttpServlet {
     }
 
     private ArrayList<Doctor> searchDoctors(
+            String patientAlias,
             String firstName,
             String lastName,
             String specializationName,
             String city,
             String provId,
+            String postalCode,
             boolean reviewedByFriend,
             String comment) throws SQLException, ClassNotFoundException, NamingException {
         Connection connection = null;
@@ -82,29 +90,51 @@ public class DoctorSearchResultsServlet extends HttpServlet {
         ArrayList<Doctor> doctors = new ArrayList<>();
         try {
             String sql =
-                    "";
+                    "Select Review.reviewee, Doctor.firstName, Doctor.lastName, avg(starRating) rating, count(Distinct reviewID) numReviews " +
+                    "From Doctor " +
+                    "Join Specialization, hasSpecialization, Address, hasAddress, Review " +
+                    "Where Doctor.alias = hasSpecialization.alias " +
+                    "AND hasSpecialization.hasSpecialization = Specialization.specializationID " +
+                    "AND Doctor.alias = hasAddress.alias " +
+                    "AND hasAddress.hasAddress = Address.addressID " +
+                    "AND Reviewee = Doctor.alias ";
             if (!StringHelper.isNullOrEmpty(firstName)) {
-                sql += " AND pat.alias = ? ";
+                sql += " AND Doctor.firstName = ? ";
             }
             if (!StringHelper.isNullOrEmpty(lastName)) {
-                sql += " AND pat.provinceID = ? ";
+                sql += " AND Doctor.lastName = ? ";
             }
             if (!StringHelper.isNullOrEmpty(specializationName)) {
-                sql += " AND pat.city = ? ";
+                sql += " AND Specialization.specializationName = ? ";
             }
             if (!StringHelper.isNullOrEmpty(city)) {
-                sql += " AND pat.provinceID = ? ";
+                sql += " AND Address.city = ? ";
             }
             if (!StringHelper.isNullOrEmpty(provId)) {
-                sql += " AND pat.provinceID = ? ";
+                sql += " AND Address.provinceID = ? ";
+            }
+            if (!StringHelper.isNullOrEmpty(postalCode)) {
+                sql += " AND Address.postalCode LIKE ? ";
             }
             if (reviewedByFriend) {
-                // TODO: ??
+                sql +=
+                        " AND Reviewer IN ( " +
+                        "  SELECT f.Requestee " +
+                        "  FROM Friend f " +
+                        "  WHERE Requester = ? " +
+                        "  AND f.Requestee IN ( " +
+                        "    SELECT i.Requester " +
+                        "    FROM Friend i " +
+                        "    WHERE i.Requestee = ? " +
+                        "  ) " +
+                        ") ";
             }
             if (!StringHelper.isNullOrEmpty(comment)) {
-                sql += " AND pat.provinceID = ? ";
+                sql += " AND comments like ? ";
             }
-            sql += " GROUP BY pat.alias";
+            sql +=
+                    " Group by reviewee " +
+                    " Having avg(starRating) > 0 ";
             connection = ConnectionHub.getConnection();
             statement = connection.prepareStatement(sql);
 
@@ -124,17 +154,26 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             if (!StringHelper.isNullOrEmpty(provId)) {
                 statement.setString(currentParamIndex++, provId);
             }
+            if (!StringHelper.isNullOrEmpty(postalCode)) {
+                statement.setString(currentParamIndex++, "%" + postalCode + "%");
+            }
             if (reviewedByFriend) {
-                // TODO: ??
+                statement.setString(currentParamIndex++, patientAlias);
+                statement.setString(currentParamIndex++, patientAlias);
             }
             if (!StringHelper.isNullOrEmpty(comment)) {
-                statement.setString(currentParamIndex++, comment);
+                statement.setString(currentParamIndex++, "%" + comment + "%");
             }
 
             ResultSet results = statement.executeQuery();
 
             while(results.next()) {
                 Doctor doctor = new Doctor();
+                doctor.alias = results.getString("reviewee");
+                doctor.firstName = results.getString("firstName");
+                doctor.lastName = results.getString("lastName");
+                doctor.rating = results.getDouble("rating");
+                doctor.numReviews = results.getInt("numReviews");
 
                 doctors.add(doctor);
             }
