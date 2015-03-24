@@ -33,8 +33,8 @@
                 <%= authMessage %>
             <% } %>
             <form method="post" action="UserLoginServlet">
-                <input type="text" name="alias" class="textbox" placeholder="Alias"> <br/>
-                <input type="password" name="password" class="textbox" placeholder="Password"> <br/>
+                <input type="text" name="alias" id="tx1" class="textbox" placeholder="Alias"> <br/>
+                <input type="password" name="password" id="tx2" class="textbox" placeholder="Password"> <br/>
 
                 <input type="submit" value="Login" id="submitButton">
             </form>

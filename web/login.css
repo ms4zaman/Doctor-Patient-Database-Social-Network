@@ -61,3 +61,11 @@ input.textbox{
     border-bottom: 1px solid #FFF;
     border-width: 0px 0px 0px;
 }
+
+
+input.textbox#tx1{
+    border-radius: 5px 5px 0px 0px;
+}
+input.textbox#tx2{
+    border-radius: 0px 0px 5px 5px;
+}
