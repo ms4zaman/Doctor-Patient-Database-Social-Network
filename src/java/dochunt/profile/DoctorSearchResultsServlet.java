@@ -138,7 +138,7 @@ public class DoctorSearchResultsServlet extends HttpServlet {
             sql += " GROUP BY Doctor.alias ";
 
             if (rating > 0) {
-                sql += " HAVING avg(starRating) > ? ";
+                sql += " HAVING avg(starRating) >= ? ";
             }
 
             connection = ConnectionHub.getConnection();
