@@ -31,7 +31,7 @@ WHERE
     d.gender = genNum
     AND a.city = city
     AND s.specializationName = specializtion
-    AND d.licenseYear <= licYear;
+    AND d.licenseYear = licYear;
 
 END
 $

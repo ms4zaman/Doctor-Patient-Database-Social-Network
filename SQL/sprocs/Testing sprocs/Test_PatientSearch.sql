@@ -10,9 +10,10 @@ BEGIN
     SELECT 
         COUNT(alias)
     INTO num
-    FROM Patient p
-    WHERE p.city = city 
-        AND p.provinceID = prov;
+    FROM Patient pat
+    INNER JOIN Province prv ON (pat.provinceID = prv.provinceID)
+    WHERE pat.city = city 
+        AND prv.provinceName = prov;
 END
 $
 DELIMITER;
