@@ -117,7 +117,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ece356db_dctittel`.`Review` ;
 
 CREATE TABLE IF NOT EXISTS `ece356db_dctittel`.`Review` (
-  `reviewID` INT NOT NULL,
+  `reviewID` INT NOT NULL AUTO_INCREMENT,
   `reviewer` VARCHAR(30) NULL,
   `reviewee` VARCHAR(30) NULL,
   `starRating` INT NULL,
