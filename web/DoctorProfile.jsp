@@ -28,6 +28,9 @@
             Doctor not found
         <% } else { %>
             Doctor: <%= doctor.lastName %>, <%= doctor.firstName %> <br/>
+            <% if (LoginUtil.isDoctorLoggedIn(loginInfo)) { %>
+                Email: <%= doctor.email %> <br/>
+            <% } %>
             Gender: <%= doctor.getGenderText() %> <br/>
             No. Years Licensed: <%= doctor.numYearsLicensed %> <br/>
             Address(es): <br/>

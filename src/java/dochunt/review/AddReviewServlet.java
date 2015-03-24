@@ -41,22 +41,22 @@ public class AddReviewServlet extends HttpServlet {
         LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
         String patientAlias = loginInfo.alias;
         String doctorAlias = request.getParameter("doctorAlias"); // hidden element on form
-        int rating = Integer.parseInt(request.getParameter("rating"));
+        double rating = Double.parseDouble(request.getParameter("rating"));
         String comments = request.getParameter("comments");
 
         try {
             addReview(patientAlias, doctorAlias, rating, comments);
+            response.sendRedirect("DoctorProfileServlet?doctorAlias=" + doctorAlias);
         } catch (Exception ex) {
             Logger.getLogger(PatientSearchResultsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("index.jsp");
         }
-        // TODO: Redirect to doctor's profile
-        response.sendRedirect("index.jsp");
     }
 
     private void addReview(
             String patientAlias,
             String doctorAlias,
-            int rating,
+            double rating,
             String comments) throws SQLException, NamingException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -70,7 +70,7 @@ public class AddReviewServlet extends HttpServlet {
 
             statement.setString(1, patientAlias);
             statement.setString(2, doctorAlias);
-            statement.setInt(3, rating);
+            statement.setDouble(3, rating);
             statement.setString(4, comments);
 
             statement.execute();

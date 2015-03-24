@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% LoginUtil.assertUserLoggedIn(session, response); %>
+        <% LoginUtil.assertPatientLoggedIn(session, response); %>
         <h1>Friends</h1>
         <%! ArrayList<String> friends;%>
         <%

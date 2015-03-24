@@ -21,12 +21,12 @@
         <ul>
             <li><a href="PatientSearchServlet">Patient Search</a></li>
             <li><a href="DoctorSearchServlet">Doctor Search</a></li>
-            <li>
+            <!--li>
                 <form method="post" action="SeeFriendshipServlet">
                     See Friendship for Alias: <input type="text" name="alias"><br/>
                     <input type="submit" value="See!">
                 </form>
-            </li>
+            </li-->
             <% if (LoginUtil.isPatientLoggedIn(loginInfo)) { %>
                 <li>
                     <a href="SeeFriendshipServlet">View Friends</a>

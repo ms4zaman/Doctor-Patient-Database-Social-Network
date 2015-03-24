@@ -48,9 +48,9 @@ public class ViewReviewServlet extends HttpServlet {
 
             if (review != null) {
                 String prevReviewId = getPrevReviewId(
-                        review.date, review.doctorAlias);
+                        review.reviewId, review.doctorAlias);
                 String nextReviewId = getNextReviewId(
-                        review.date, review.doctorAlias);
+                        review.reviewId, review.doctorAlias);
 
                 request.setAttribute("review", review);
                 request.setAttribute("prevReviewId", prevReviewId);
@@ -108,10 +108,8 @@ public class ViewReviewServlet extends HttpServlet {
         return review;
     }
 
-    public String getNextReviewId(long dateMsSinceEpoch, String doctorAlias)
+    public String getNextReviewId(String reviewId, String doctorAlias)
             throws NamingException, SQLException {
-        Timestamp timestamp = new Timestamp(dateMsSinceEpoch);
-
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -122,12 +120,12 @@ public class ViewReviewServlet extends HttpServlet {
             String sql =
                     "SELECT reviewID " +
                     "FROM Review " +
-                    "WHERE creationDate > ? " +
+                    "WHERE reviewID > ? " +
                     "  AND reviewee = ? " +
-                    "ORDER BY creationDate ASC " +
+                    "ORDER BY reviewID ASC " +
                     "LIMIT 1 ";
             statement = connection.prepareStatement(sql);
-            statement.setTimestamp(1, timestamp);
+            statement.setString(1, reviewId);
             statement.setString(2, doctorAlias);
 
             ResultSet results = statement.executeQuery();
@@ -145,10 +143,8 @@ public class ViewReviewServlet extends HttpServlet {
         return nextReviewId;
     }
 
-    public String getPrevReviewId(long dateMsSinceEpoch, String doctorAlias)
+    public String getPrevReviewId(String reviewId, String doctorAlias)
             throws NamingException, SQLException {
-        Timestamp timestamp = new Timestamp(dateMsSinceEpoch);
-
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -159,12 +155,12 @@ public class ViewReviewServlet extends HttpServlet {
             String sql =
                     "SELECT reviewID " +
                     "FROM Review " +
-                    "WHERE creationDate < ? " +
+                    "WHERE reviewID < ? " +
                     "  AND reviewee = ? " +
-                    "ORDER BY creationDate DESC " +
+                    "ORDER BY reviewID DESC " +
                     "LIMIT 1 ";
             statement = connection.prepareStatement(sql);
-            statement.setTimestamp(1, timestamp);
+            statement.setString(1, reviewId);
             statement.setString(2, doctorAlias);
 
             ResultSet results = statement.executeQuery();

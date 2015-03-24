@@ -43,6 +43,10 @@ public class SeeFriendshipServlet extends HttpServlet {
         String alias = request.getParameter("alias");
         if (alias == null) { // Prioritize the param, default to logged in user
             LoginInfo loginInfo = LoginUtil.getLoggedInUser(request.getSession());
+            if (loginInfo == null) {
+                response.sendRedirect("UserLogin.jsp");
+                return;
+            }
             alias = loginInfo.alias;
         }
 
