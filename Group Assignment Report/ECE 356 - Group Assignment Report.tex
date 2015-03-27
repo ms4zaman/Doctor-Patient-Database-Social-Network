@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage[margin=1in]{geometry}
+\usepackage{cancel}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{hyperref}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\let\Re\relax
+\DeclareMathOperator{\Re}{\operatorname{Re}}
+\let\Im\relax
+\DeclareMathOperator{\Im}{\operatorname{Im}}
+
+\newcommand{\blah}{blah}
+
+\setlength\parindent{0pt}
+
+%\includegraphics[scale=xx]{imagename}
+
+\begin{document}
+
+\title{ECE 356 - Database Systems Group Assignment Report}
+\author{Henry Chung, Saad Zaman, Dylan Tittel}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Schema}
+
+\section{Changes to Design Since Deliverable 1}
+One major change that was done since the initial design is the introduction of a Users table. The Users table was introduced to solve the requirement for user authentication which was neglected in the first report.The Users table is summarized in Table~\ref{tab:usersTable}.
+\begin{table}[H]
+	\centering
+	\caption{Users Table}
+	\begin{tabular}{| c | c |}
+		\hline
+		Field    & Type \\
+		\hline
+		alias    & varchar \\
+		password & varchar \\
+		level    & int \\
+		\hline
+	\end{tabular}
+	\label{tab:usersTable}
+\end{table}
+The alias is the primary key of the Users table. The Doctor and Patient table are also modified slightly to have their alias foreign-key constrained to the alias of the new Users table. The level field in the Users table details whether the user is a Doctor or a Patient and the password field is used to store the hashed and salted password of the user.
+
+\section{Third-Party Software}
+No third-party software outside of what was used in the ECE 356 labs have been used for the implementation of this group assignment.
+
+\section{Interface Design}
+The GUI for the database application conforms to the model-view-controller (MVC) design pattern through a number of ways: the project structure and the semantics of the code. In an MVC architected software system, the code is separated into three major components:
+\begin{itemize}
+	\item Model
+	\item View
+	\item Controller
+\end{itemize}
+These three groups of components are reflected in the project layout. The views corresponds to the individual \texttt{.jsp} files found in the ``Web Pages'' folder of the project. The ``Source Packages'' section of the project contains both the models and controllers. The models are all contained with the ``models'' folder. All servlets (classes with the suffix \texttt{Servlet}) corresponds to the controller. \\
+
+As discussed earlier, the MVC design pattern is enforced by the project layout. The MVC design pattern is also enforced semantically by the way the code adheres to the principle of separations of concerns (SoC). The view is strictly responsible for the presentation and templating of data. The data provided is handled by the controller and the form of the data is held in contract by the implementation of the models. The model, in general, is a Java-object representation of the tables. The controller handles obtaining the appropriate data, creating the appropriate models, and ``sending'' the models to the view. As such, very dynamic data-driven view has its own controller.
+
+\section{Security and Access Control}
+\subsection{SQL Injection Prevention}
+SQL injection can occur when user-data is accepted in its raw form when building dynamic SQL statements. If the user-data is to contain malicious SQL code, then the query will be executed. This poses a security threat to database and all data stored in the database, including private data such as a user's address, are at a risk of being exposed. \\
+
+In order to prevent SQL injection, \textit{all user-data} are first ``escaped.'' This makes it such that any SQL code in the data is now read as plain-text. In order to accomplish this, the use of Java's \texttt{PreparedStatement} class is used when building dynamic SQL that uses user-data. \\
+
+An example of where this is done can be found in the \texttt{PatientSearchResultsServlet.java} which accepts three parameters from the user.
+
+\verbatiminput{"res/code/SQL Injection Prevention.java"}
+
+In this particular example, although the \texttt{provId} is passed through using a dropdown web control defined by the developer, it was still passed through and as a parameter of the \texttt{PreparedStatement} when building the dynamic SQL. This is because the security risk of a malicious user modifying the html POST data was recognized. Having every parameter go through a \texttt{PreparedStatement} accounts for this and other related risks.
+
+\subsection{Password Hashing and Salting}
+\subsection{Access Control}
+All user authentication and security code can be found in the \texttt{LoginUtil} class. The methods contained in this utility class are as follows
+
+\verbatiminput{"res/code/LoginUtil Prototypes.java"}
+
+All of the methods contained in the \texttt{LoginUtil} class can be used in both the views (\texttt{.jsp} files) and controllers (\texttt{Servlet} files) in order to enforce appropriate user authentication in both the front-end and the back-end. The use of these methods in the views will prevent the user from viewing pages that they were not intended to view and the use of these methods in the controllers are to prevent the querying and binding of the respective data. \\
+
+The \texttt{assert[User/Patient/Doctor]LoggedIn()} methods will ensure that the user logged in is of one of the specified type: logged in at all, patient, and doctor. If assert fails, then a redirection to the login page occurs immediately to prompt user login. The \texttt{is[Patient/Doctor]LoggedIn()} methods simply returns a boolean specifying whether the check is true or false. These two methods are used to tweak certain pages in order to expose different experiences between a user who's a patient or doctor. An example of the use of these two methods can be found in the Doctor profile view where the viewing of the doctor's email is exposed only to other doctors and the option to write new review for a doctor is exposed only to patients.
+\verbatiminput{"res/code/Is User Logged In.jsp"}
+
+\section{Indexing Strategy}
+
+
+\section{Concurrency}
+
+\section{Novel Features}
+A novel feature unique to this group's implementation of the Doctor and Patient application can be seen on the login page. The application's name, DocHunt!, is a play on words of the popular retro game Duck Hunt. As such, certain themes from the game Duck Hunt were used and integrated into the login page of the Doctor and Patient application. Figure~\ref{fig:docHuntLogin} illustrates the login page.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{"res/image/DocHunt Login Page"}
+	\caption{The Login Page for DocHunt!}
+	\label{fig:docHuntLogin}
+\end{figure}
+
+\end{document}
